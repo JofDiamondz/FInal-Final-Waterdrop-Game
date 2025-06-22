@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Little Waterdrop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Cute, rounded font -->
+  <link href="https://fonts.googleapis.com/css?family=Baloo+2:700|Poppins:400,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Baloo 2', 'Poppins', Arial, sans-serif;
+      background: linear-gradient(180deg, #b3e0ff 0%, #a3f7bf 100%);
+      min-height: 100vh;
+      color: #333;
+      transition: background 0.5s;
+    }
+    .screen {
+      display: none;
+      min-height: 100vh;
+      width: 100vw;
+    }
+    .visible {
+      display: flex !important;
+    }
+    .header {
+      width: 100%;
+      background: #ffb347;
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 14px 0;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 3px solid #ffe29a;
+      border-radius: 0 0 24px 24px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    /* Center everything vertically and horizontally */
+    .center-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      position: relative;
+    }
+    /* Waterdrop SVG styling */
+    .waterdrop-svg {
+      width: 120px;
+      height: 140px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+    /* Bounce animation for both outfit and waterdrop */
+    .drop-bounce {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0);}
+      50% { transform: translateY(-10px);}
+    }
+    /* Sidebars for buttons */
+    .side-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .side-left {
+      left: 24px;
+    }
+    .side-right {
+      right: 24px;
+    }
+    .cute-btn {
+      font-size: 1.1rem;
+      border-radius: 18px;
+      border: none;
+      background: #00bfff;
+      color: #fff;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #b3e0ff44;
+      min-width: 90px;
+    }
+    .cute-btn:hover {
+      background: #0099cc;
+    }
+    /* Status bars */
+    .status-bars {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin: 18px 0 0 0;
+    }
+    .bar-container {
+      width: 80px;
+      text-align: center;
+    }
+    .bar-label {
+      font-size: 1rem;
+      margin-bottom: 2px;
+      color: #00bfff;
+    }
+    .bar-bg {
+      width: 220px;
+      height: 18px;
+      background: #eee;
+      border-radius: 9px;
+      margin: 4px 0 10px 0;
+      overflow: hidden;
+      box-shadow: 0 1px 2px #ccc inset;
+    }
+    .bar-fill {
+      height: 100%;
+      width: 50%; /* Start at half */
+      border-radius: 9px 0 0 9px;
+      transition: width 0.3s;
+    }
+    /* Adoption input */
+    .adopt-box {
+      background: #fffbe0;
+      border-radius: 24px;
+      box-shadow: 0 2px 12px #b3e0ff44;
+      padding: 24px 16px;
+      margin: 16px 0;
+      width: 90vw;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .cute-input {
+      font-size: 1.2rem;
+      border-radius: 18px;
+      border: 2px solid #b3e0ff;
+      padding: 10px 18px;
+      outline: none;
+      width: 70%;
+      margin-bottom: 12px;
+      background: #fff;
+      transition: border 0.2s;
+      text-align: center;
+    }
+    .cute-input:focus {
+      border: 2px solid #00bfff;
+    }
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -30%);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px #0002;
+      padding: 24px;
+      z-index: 100;
+    }
+    .modal-content {
+      background: #fffbe0;
+      border-radius: 24px;
+      padding: 32px 24px;
+      min-width: 260px;
+      max-width: 90vw;
+      box-shadow: 0 4px 24px #b3e0ff55;
+      text-align: center;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #00bfff;
+      cursor: pointer;
+    }
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+    .modal-actions button {
+      min-width: 90px;
+    }
+    .modal-img {
+      width: 60px;
+      height: 60px;
+      margin: 0 8px;
+      border-radius: 12px;
+      background: #e0f7fa;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .modal-note {
+      background: #e0f7fa;
+      color: #00bfff;
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin: 12px 0 0 0;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+    /* Splash Screen styling */
+    #splashScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 30;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+    #splashScreen.visible {
+      display: flex !important;
+    }
+    /* Responsive for mobile */
+    @media (max-width: 600px) {
+      .side-buttons {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        margin: 12px 0;
+        transform: none;
+      }
+      .side-left, .side-right {
+        left: 0;
+        right: 0;
+      }
+      .center-area {
+        flex-direction: column;
+      }
+      .status-bars {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    /* Action Buttons */
+    button {
+      margin: 0 6px 8px 0;
+      padding: 8px 18px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      background: #fff;
+      color: #222;
+      box-shadow: 0 2px 6px #b3e0ff44;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #e0f7fa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Restart button -->
+  <button id="restartBtn" title="Restart" style="
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #00bfff;
+    ">
+    🔄
+  </button>
+
+  <!-- Splash Screen -->
+  <div id="splashScreen" class="screen visible" style="flex-direction:column;align-items:center;justify-content:center;">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVUAAACUCAMAAAAUEUq5AAAAt1BMVEX/////ygsAAAD/yAD/11H/67j6+vq4t7f/2nL4+Pg+Ojv/+ub/zivY2NjLysr/4X7/223CwcGwr6//5JCop6czLzBoZmb/5qP/0D3Ix8fs7Oze3t4WERKZmJgIAAD///v//O//9diGhIVzcXIeFxn/zRw0MDHo6OgpJSZiXl9ZV1f/+ej/88//5Zf/8MD/2WGPjo5HQ0R8env/7K//4YT/2Wb/8cj/0Tv/1Er/5Z2Ih4dPTEyUkpOtCzKXAAAIUklEQVR4nO2ca2OaPBSAMbRYsDChSCcCtYKirBdhe7tN/f+/601CgCCwCfOyduf5onKR+HBycgK0ggAAAAAAAAAAAAAAAAAAwIF8mdKXB/bK8fByd3f3tbIY+C2Pw97tFL8+fBLnw5syVyJh/jh9uXQr3xfTG1HsiXffnoRv+LVCjyDOe+LTpRv6rril4sSe8MwMVpxShl8u3dB3xS2T+Zrp+1QwzKVCqLbjmgUkk/uztPI+i1bx9ULNe6c89kqUY/KpaQXwG6647IljcsDzmq8Try7dznfF/bwUq+L8tmDOCRffLt3Sd8S92NujtgTAiz9duqnviKuK1QZgvGrB4VYhsR4OWD0FYPUUXOXz1Ead6Sqw2gJm9eb+tUnr88/PIlhtB7Uq/off/ajVKt4LwgCstiS1SmrRtzqr4vcHQZhCBmhJavX7FL8d1mgVydXqrxCrLUnzqniH336pkTrEy6e3YLUlbLSaD/D752qwksV3UAO0JausSFA+zPe00hAezMFqW7JZgPgosATKSe3hoUq4Yd7B6uHkVqm0ctEqXuNFj6UNgIPIZ6xU4aB0RZVUsblosNqCwiqtrl64y6s/yG3Vl3w9WD2c4uqK+Ew+D64zXkhSffgMVjvAXbOa19zyL24VgNUWcFZpZm1cDVZbwFu9x5/v8yethkTyZ7DahT2rT/y9wAFY7cie1Re+YH0Eqx0Bq6cArJ4CsHoK9qw+wmh1DPYrK/J3AAzyFCBY7QRvteb5NHgosBPc5Inc+NvnDax2gbNKJ6zXN0PGN3IduwhWsNqC4krgKwnVO360Ion1Eax2oLBKQvONq6tYSvgGV63bk99hIQ9aPHwv32EhNwOnYLU9udWpkN2j5rRy97PBaguyO9fkRsCX/ecB6J0rFsBgtQXs2ZVbkkKrjwTRB4KuwWpbmNWvArm2ui+1J/7Ath+u4ImglqTGCnn7Wsks9g2stqR40vJrjdSeOJ9i35ABWsJidSoMbuufCv7ELg+C1RawvPr5pl4qmXMN5xCrLTnkry16YLUl8JdBpwCsngKwegoa/8yqYnV46aa+I/YvqDRb/fn7LwMYb82Df1kq/cML4EDuav6JVQ23NQ8MAs0MXq5/z8v00s0EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADogtxtN/u4rfhAyObaQv1OuyYoPnJjPgyS7qNuVuVRgNRjN+fDIDkdY9V3FkduygdCUjpaFdSO+fhfoLvVEupZxi5JO8dRjsCRrG7O8ntD6xxHOQLHsWorZxm5zNU5jnIEjmPVR5Nfb6AdI5ZV76+N1f5W2S6SPLSo1b6CkKJzG9nrOIqCqFgka30rEiQXoR39PNENH2Ur14EXzFzXlciepmEYJtlRJm/G6RYmQma1KcW2gkw3lPr4c8gaZsTRShmZUra1ukJBbLruOG+Tq0TxyOCa6K8kATdx00HLH2GvFFWWZMXJAhRbNTauLWsK97vD0daWBNtHbrZk4i+8QLZczUE06vr+0smtqv1RYGiaRgTIRozQjJw0aeyjDTt7vuf51cbIxgg5O7qJ7lCZ2spx03FPsjxVwrMUZGWlhq0mXqRqWpg1KbZkSdJRIhVNXIa+qy3RWDgrcoRoo0y0ZUskxYlptOhIycfxBNEImBTisDrH2eClsyUTZXrFynDhFHlVXSIW43qSLdMUpTYF9L1RKslKjyj0d2yNgdIcukTFji7iMoC8HVHffhENIVomJuk6Zy4V1igNGXmXnU5J8dbpIuTkuXGzoA0OF1y6tJcO3TdTr6LC6mTEWcXnhA0qVpgvkyShliC1iQ+enuYo26W/TNVsuS5UsrpjHd1ASl44ew49cnHYs2DnYZRTjFbI2x9x1BE3KbVHyCitbLQaojS+JgeMLev0aoLrjgLyDWFlkI+LLFS26gXbFWEbx9mxpcCryd4nZ+w4+52Ds1oexyXNt/juZ++lq2aruFPSqN4ckN7UgOwpbYWIht6uXI9M1r7i1VvFhx9Lckre5KASNOeg71VSTpNV3UomoVK2Wtr3F1ZVRD7aVkOvLxEhnIC0tdBHAcmV/KqJb43x+nqrule9uIOtXmLy1fcOjFVSKtC82smqEJMR3zioNxrEJq4Z8LF0QZtxDdvRwPuF1UpXuJDVseP9Iq8WVrV0BOhsdewFEyE66NKAjW3aRFaC04bPpXEljcUmqyqq5tALWbWXXl4hs+5ZZ9Vmtat9aAYoVVaErTdTZ8JBzFBikhZoKNC4wchihQRv1eRHq8CpVMAXsiok3pK9M5kGaVG1ioXRkFaJSJnpr7Ga581Q2cssfW9p8VlaMt2mJKsiPOXAr3LsxNxYFTi02KWFn8TGo6yGpbhowRabeSUVnLv+T7GzQqUoYZasJ8kot4ZHG1LDmhHJdTPWZtspD7AaQnkXl7bk1ISFWawo4jfeIbRualOM0qh2vQWXMwKHlFxaFHuJkM17+yjGIvupTClik2c9/ylSx/saf4y9QokWTkyW9GwzQihYTwTbxRPN5S6NLylByEpw5MxQbKX9LDS3ZH3ubewuEYrdTIOB5/lmzFXfZvkU4C9MhAZM1kfC0vzdREjZbNd4yhfMRiwopRhFup/NvuQEz4xDdZNNae29Jp4VPbGsxGAtkcdjPH/XbUHW6Zt8ZrPZ6BLpuDMz3dJO1+e9WtXxx7Gel4q6v9rxo5PtlA4aJn7jhMf2WXIo5QxBXc8M8o36bJN/sb2zfO5sqeSnFBdb0t9yqZtpTbPHY6I3dvgq0t5rG87wU/4ifLj/enwOuQQAtES2LlLhfGx0Jfq38t05MC5VNn5oNujAySrQBnioBQAAAAAAAAAAAAAAAAAAAAAA4F/hf0ONlxDLCNi6AAAAAElFTkSuQmCC"
+    alt="charity: water logo" style="width:180px; margin-bottom:32px;">
+    <button id="playGameBtn" class="cute-btn" style="font-size:1.3rem; display:none;">Play Game</button>
+  </div>
+
+  <!-- Adoption Screen -->
+  <div id="adoptScreen" class="screen visible" style="flex-direction:column;align-items:center;">
+    <div class="header">You have just adopted your very own baby water drop!!!</div>
+    <div class="adopt-box">
+      <input id="nameInput" class="cute-input" maxlength="12" placeholder="Let's name it..." autocomplete="off">
+      <div class="waterdrop-svg">
+        <!-- Cute waterdrop SVG -->
+        <svg width="120" height="140" viewBox="0 0 120 140">
+          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
+          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
+          <ellipse cx="60" cy="70" rx="14" ry="16" fill="#fff" opacity="0.7"/>
+          <!-- Eyes -->
+          <ellipse cx="48" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="72" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="48" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="72" cy="102" rx="3" ry="4" fill="#333"/>
+          <!-- Blush -->
+          <ellipse cx="42" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
+          <ellipse cx="78" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
+          <!-- Smile -->
+          <path d="M52 112 Q60 118 68 112" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <button id="adoptBtn" class="cute-btn">Adopt!</button>
+    </div>
+  </div>
+
+  <!-- Dashboard/Main Screen -->
+  <div id="dashboardScreen" class="screen" style="flex-direction:column;">
+    <div class="header" id="dashboardHeader"></div>
+    <div class="center-area">
+      <!-- Left side buttons -->
+      <div class="side-buttons side-left">
+        <button class="cute-btn" id="feedBtn">💧 Feed</button>
+        <button class="cute-btn" id="cleanBtn">🧼 Clean</button>
+      </div>
+      <!-- Waterdrop always centered, outfit literally on top -->
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;">
+        <span id="outfitIcon" style="font-size:2.2rem; margin-bottom:-38px; z-index:2; position:relative;"></span>
+        <div class="drop-bounce">
+          <div class="waterdrop-svg" id="mainDrop"></div>
+        </div>
+      </div>
+      <!-- Right side buttons -->
+      <div class="side-buttons side-right">
+        <button class="cute-btn" id="playBtn">🎲 Play</button>
+        <button class="cute-btn" id="dressBtn">👗 Dress Up</button>
+        <button class="cute-btn" id="bgBtn">🌈 Bg</button>
+      </div>
+    </div>
+    <!-- Point bars -->
+    <div style="margin-bottom: 24px;">
+      <div style="margin-bottom: 8px;">
+        <label for="thirstBar" style="font-weight:bold;">Thirsty</label>
+        <div class="bar-bg">
+          <div id="thirstBar" class="bar-fill" style="background:#00bfff;"></div>
+        </div>
+      </div>
+      <div style="margin-bottom: 8px;">
+        <label for="cleanBar" style="font-weight:bold;">Clean</label>
+        <div class="bar-bg">
+          <div id="cleanBar" class="bar-fill" style="background:#b3e0ff;"></div>
+        </div>
+      </div>
+      <div>
+        <label for="happyBar" style="font-weight:bold;">Happy</label>
+        <div class="bar-bg">
+          <div id="happyBar" class="bar-fill" style="background:#ffe066;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clean Modal -->
+  <div id="cleanModal" class="modal">
+    <div class="modal-content">
+      <img src="data:image/png;base64,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"
+      alt="charity: water logo" style="width:60px;position:absolute;top:12px;left:12px;">
+      <button class="modal-close" onclick="closeModal('cleanModal')">&times;</button>
+      <div style="margin:16px 0;">
+        <div id="dirtyDrop" class="waterdrop-svg"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="cute-btn" onclick="cleanAction('scrub')"><span class="modal-img">🧽</span><br>Scrub</button>
+        <button class="cute-btn" onclick="cleanAction('disinfect')"><span class="modal-img">🧴</span><br>Disinfect</button>
+        <button class="cute-btn" onclick="cleanAction('soap')"><span class="modal-img">🧼</span><br>Soap</button>
+      </div>
+      <div class="modal-note">
+        Use the right tools to clean your waterdrop! Each action helps.
+      </div>
+      <button class="cute-btn" onclick="closeModal('cleanModal')">Done</button>
+    </div>
+  </div>
+
+  <!-- Play Modal -->
+  <div id="playModal" class="modal">
+    <div class="modal-content">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVUAAACUCAMAAAAUEUq5AAAAt1BMVEX/////ygsAAAD/yAD/11H/67j6+vq4t7f/2nL4+Pg+Ojv/+ub/zivY2NjLysr/4X7/223CwcGwr6//5JCop6czLzBoZmb/5qP/0D3Ix8fs7Oze3t4WERKZmJgIAAD///v//O//9diGhIVzcXIeFxn/zRw0MDHo6OgpJSZiXl9ZV1f/+ej/88//5Zf/8MD/2WGPjo5HQ0R8env/7K//4YT/2Wb/8cj/0Tv/1Er/5Z2Ih4dPTEyUkpOtCzKXAAAIUklEQVR4nO2ca2OaPBSAMbRYsDChSCcCtYKirBdhe7tN/f+/601CgCCwCfOyduf5onKR+HBycgK0ggAAAAAAAAAAAAAAAAAAwIF8mdKXB/bK8fByd3f3tbIY+C2Pw97tFL8+fBLnw5syVyJh/jh9uXQr3xfTG1HsiXffnoRv+LVCjyDOe+LTpRv6rril4sSe8MwMVpxShl8u3dB3xS2T+Zrp+1QwzKVCqLbjmgUkk/uztPI+i1bx9ULNe6c89kqUY/KpaQXwG6647IljcsDzmq8Try7dznfF/bwUq+L8tmDOCRffLt3Sd8S92NujtgTAiz9duqnviKuK1QZgvGrB4VYhsR4OWD0FYPUUXOXz1Ead6Sqw2gJm9eb+tUnr88/PIlhtB7Uq/off/ajVKt4LwgCstiS1SmrRtzqr4vcHQZhCBmhJavX7FL8d1mgVydXqrxCrLUnzqniH336pkTrEy6e3YLUlbLSaD/D752qwksV3UAO0JausSFA+zPe00hAezMFqW7JZgPgosATKSe3hoUq4Yd7B6uHkVqm0ctEqXuNFj6UNgIPIZ6xU4aB0RZVUsblosNqCwiqtrl64y6s/yG3Vl3w9WD2c4uqK+Ew+D64zXkhSffgMVjvAXbOa19zyL24VgNUWcFZpZm1cDVZbwFu9x5/v8yethkTyZ7DahT2rT/y9wAFY7cie1Re+YH0Eqx0Bq6cArJ4CsHoK9qw+wmh1DPYrK/J3AAzyFCBY7QRvteb5NHgosBPc5Inc+NvnDax2gbNKJ6zXN0PGN3IduwhWsNqC4krgKwnVO360Ion1Eax2oLBKQvONq6tYSvgGV63bk99hIQ9aPHwv32EhNwOnYLU9udWpkN2j5rRy97PBaguyO9fkRsCX/ecB6J0rFsBgtQXs2ZVbkkKrjwTRB4KuwWpbmNWvArm2ui+1J/7Ath+u4ImglqTGCnn7Wsks9g2stqR40vJrjdSeOJ9i35ABWsJidSoMbuufCv7ELg+C1RawvPr5pl4qmXMN5xCrLTnkry16YLUl8JdBpwCsngKwegoa/8yqYnV46aa+I/YvqDRb/fn7LwMYb82Df1kq/cML4EDuav6JVQ23NQ8MAs0MXq5/z8v00s0EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADogtxtN/u4rfhAyObaQv1OuyYoPnJjPgyS7qNuVuVRgNRjN+fDIDkdY9V3FkduygdCUjpaFdSO+fhfoLvVEupZxi5JO8dRjsCRrG7O8ntD6xxHOQLHsWorZxm5zNU5jnIEjmPVR5Nfb6AdI5ZV76+N1f5W2S6SPLSo1b6CkKJzG9nrOIqCqFgka30rEiQXoR39PNENH2Ur14EXzFzXlciepmEYJtlRJm/G6RYmQma1KcW2gkw3lPr4c8gaZsTRShmZUra1ukJBbLruOG+Tq0TxyOCa6K8kATdx00HLH2GvFFWWZMXJAhRbNTauLWsK97vD0daWBNtHbrZk4i+8QLZczUE06vr+0smtqv1RYGiaRgTIRozQjJw0aeyjDTt7vuf51cbIxgg5O7qJ7lCZ2spx03FPsjxVwrMUZGWlhq0mXqRqWpg1KbZkSdJRIhVNXIa+qy3RWDgrcoRoo0y0ZUskxYlptOhIycfxBNEImBTisDrH2eClsyUTZXrFynDhFHlVXSIW43qSLdMUpTYF9L1RKslKjyj0d2yNgdIcukTFji7iMoC8HVHffhENIVomJuk6Zy4V1igNGXmXnU5J8dbpIuTkuXGzoA0OF1y6tJcO3TdTr6LC6mTEWcXnhA0qVpgvkyShliC1iQ+enuYo26W/TNVsuS5UsrpjHd1ASl44ew49cnHYs2DnYZRTjFbI2x9x1BE3KbVHyCitbLQaojS+JgeMLev0aoLrjgLyDWFlkI+LLFS26gXbFWEbx9mxpcCryd4nZ+w4+52Ds1oexyXNt/juZ++lq2aruFPSqN4ckN7UgOwpbYWIht6uXI9M1r7i1VvFhx9Lckre5KASNOeg71VSTpNV3UomoVK2Wtr3F1ZVRD7aVkOvLxEhnIC0tdBHAcmV/KqJb43x+nqrule9uIOtXmLy1fcOjFVSKtC82smqEJMR3zioNxrEJq4Z8LF0QZtxDdvRwPuF1UpXuJDVseP9Iq8WVrV0BOhsdewFEyE66NKAjW3aRFaC04bPpXEljcUmqyqq5tALWbWXXl4hs+5ZZ9Vmtat9aAYoVVaErTdTZ8JBzFBikhZoKNC4wchihQRv1eRHq8CpVMAXsiok3pK9M5kGaVG1ioXRkFaJSJnpr7Ga581Q2cssfW9p8VlaMt2mJKsiPOXAr3LsxNxYFTi02KWFn8TGo6yGpbhowRabeSUVnLv+T7GzQqUoYZasJ8kot4ZHG1LDmhHJdTPWZtspD7AaQnkXl7bk1ISFWawo4jfeIbRualOM0qh2vQWXMwKHlFxaFHuJkM17+yjGIvupTClik2c9/ylSx/saf4y9QokWTkyW9GwzQihYTwTbxRPN5S6NLylByEpw5MxQbKX9LDS3ZH3ubewuEYrdTIOB5/lmzFXfZvkU4C9MhAZM1kfC0vzdREjZbNd4yhfMRiwopRhFup/NvuQEz4xDdZNNae29Jp4VPbGsxGAtkcdjPH/XbUHW6Zt8ZrPZ6BLpuDMz3dJO1+e9WtXxx7Gel4q6v9rxo5PtlA4aJn7jhMf2WXIo5QxBXc8M8o36bJN/sb2zfO5sqeSnFBdb0t9yqZtpTbPHY6I3dvgq0t5rG87wU/4ifLj/enwOuQQAtES2LlLhfGx0Jfq38t05MC5VNn5oNujAySrQBnioBQAAAAAAAAAAAAAAAAAAAAAA4F/hf0ONlxDLCNi6AAAAAElFTkSuQmCC"
+      alt="charity: water logo" style="width:60px;position:absolute;top:12px;left:12px;">
+      <button class="modal-close" onclick="closeModal('playModal')">&times;</button>
+      <div style="margin:16px 0;">
+        <div style="font-size:1.1rem; margin-bottom:12px;">
+          Play with your waterdrop! Choose an activity:
+        </div>
+        <div class="modal-actions">
+          <button class="cute-btn" onclick="playAction('jumprope')"><span class="modal-img">🤸</span><br>Jump Rope</button>
+          <button class="cute-btn" onclick="playAction('swimming')"><span class="modal-img">🏊</span><br>Swimming</button>
+          <button class="cute-btn" onclick="playAction('tickle')"><span class="modal-img">😂</span><br>Tickles</button>
+          <button class="cute-btn" onclick="playAction('diving')"><span class="modal-img">🏅</span><br>Diving</button>
+        </div>
+        <div id="playMsg" style="margin-top:10px;color:#00bfff;"></div>
+      </div>
+      <button class="cute-btn" onclick="closeModal('playModal')">Done</button>
+    </div>
+  </div>
+
+  <!-- Dress Up Modal -->
+  <div id="dressModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('dressModal')">&times;</button>
+      <div class="header" style="background:#00bfff;">Dress Up!</div>
+      <div class="modal-actions">
+        <button class="cute-btn" onclick="chooseOutfit(0)"><span class="modal-img">🎩</span></button>
+        <button class="cute-btn" onclick="chooseOutfit(1)"><span class="modal-img">🎀</span></button>
+        <button class="cute-btn" onclick="chooseOutfit(2)"><span class="modal-img">👒</span></button>
+        <button class="cute-btn" onclick="chooseOutfit(3)"><span class="modal-img">👑</span></button>
+        <button class="cute-btn" onclick="chooseOutfit(4)"><span class="modal-img">🕶️</span></button>
+        <button class="cute-btn" onclick="chooseOutfit(5)"><span class="modal-img">🧣</span></button>
+        <button class="cute-btn" onclick="chooseOutfit(-1)"><span class="modal-img">🚫</span></button>
+      </div>
+      <div class="modal-note">
+        Pick a cute outfit for your waterdrop!
+      </div>
+      <button class="cute-btn" onclick="closeModal('dressModal')">Done</button>
+    </div>
+  </div>
+
+  <!-- Background Modal -->
+  <div id="bgModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('bgModal')">&times;</button>
+      <div class="header" style="background:#00bfff;">Choose Background</div>
+      <div class="modal-actions">
+        <button class="cute-btn" onclick="chooseBg(0)" style="background:linear-gradient(180deg, #b3e0ff 0%, #a3f7bf 100%);">Sky</button>
+        <button class="cute-btn" onclick="chooseBg(1)" style="background:linear-gradient(180deg, #fffbe0 0%, #ffe0f7 100%);">Sunrise</button>
+        <button class="cute-btn" onclick="chooseBg(2)" style="background:linear-gradient(180deg, #e0e7ff 0%, #e0fff7 100%);">Mint</button>
+        <button class="cute-btn" onclick="chooseBg(3)" style="background:linear-gradient(180deg, #ffe0e0 0%, #fffbe0 100%);">Peach</button>
+        <button class="cute-btn" onclick="chooseBg(4)" style="background:linear-gradient(180deg, #e0f7fa 0%, #e0ffe9 100%);">Aqua</button>
+      </div>
+      <div class="modal-note">
+        Change the mood with a new background!
+      </div>
+      <button class="cute-btn" onclick="closeModal('bgModal')">Done</button>
+    </div>
+  </div>
+
+  <!-- Restart Modal -->
+  <div id="restartModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('restartModal')">&times;</button>
+      <div style="text-align:center;">
+        <button class="cute-btn" onclick="closeModal('restartModal')">Cancel</button>
+        <button class="cute-btn" onclick="restartAdoption()">Start Over</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feed Button -->
+  <button id="feedBtn">Feed</button>
+
+  <!-- Feed Modal (hidden by default) -->
+  <div id="feedModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.2); align-items:center; justify-content:center; z-index:100;">
+    <div style="background:#fff; border-radius:16px; padding:24px; min-width:350px; position:relative;">
+      <button id="closeFeedModal" style="position:absolute; top:8px; right:12px;">&times;</button>
+      <h2>Feed Minigame</h2>
+      <div id="feedGameArea"></div>
+      <div id="feedGameMsg" style="margin-top:10px; color:#00bfff;"></div>
+      <div id="feedScoreFill" style="height:12px;width:0;background:#ffb347;border-radius:8px;margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- State Variables ---
+    let waterdropName = '';
+    // Start all bars at 50 (halfway)
+    let thirst = 50;
+    let clean = 50;
+    let happy = 50;
+    let outfit = -1;
+    let bg = 0;
+
+    // --- Helper Functions ---
+    function showScreen(id) {
+      // Hide all screens, show only the one needed
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+      document.getElementById(id).classList.add('visible');
+    }
+    // Function to update the bars visually
+    function updateBars() {
+      // Set the width as a percent for each bar
+      document.getElementById('thirstBar').style.width = `${thirst}%`;
+      document.getElementById('cleanBar').style.width = `${clean}%`;
+      document.getElementById('happyBar').style.width = `${happy}%`;
+    }
+    // Call this once at the start to set the bars to half
+    updateBars();
+    function updateOutfit() {
+      // Show the selected outfit emoji directly on top of the waterdrop
+      const outfitIcon = document.getElementById('outfitIcon');
+      outfitIcon.textContent =
+        outfit === 0 ? '🎩'
+        : outfit === 1 ? '🎀'
+        : outfit === 2 ? '👒'
+        : outfit === 3 ? '👑'
+        : outfit === 4 ? '🕶️'
+        : outfit === 5 ? '🧣'
+        : '';
+    }
+    function updateBg() {
+      document.body.style.background =
+        bg === 0 ? 'linear-gradient(180deg, #b3e0ff 0%, #a3f7bf 100%)'
+        : bg === 1 ? 'linear-gradient(180deg, #fffbe0 0%, #ffe0f7 100%)'
+        : bg === 2 ? 'linear-gradient(180deg, #e0e7ff 0%, #e0fff7 100%)'
+        : bg === 3 ? 'linear-gradient(180deg, #ffe0e0 0%, #fffbe0 100%)'
+        : bg === 4 ? 'linear-gradient(180deg, #e0f7fa 0%, #e0ffe9 100%)'
+        : 'linear-gradient(180deg, #b3e0ff 0%, #a3f7bf 100%)';
+    }
+    function saveState() {
+      localStorage.setItem('waterdropName', waterdropName);
+      localStorage.setItem('thirst', thirst);
+      localStorage.setItem('clean', clean);
+      localStorage.setItem('happy', happy);
+      localStorage.setItem('outfit', outfit);
+      localStorage.setItem('bg', bg);
+    }
+    function loadState() {
+      waterdropName = localStorage.getItem('waterdropName') || '';
+      thirst = parseInt(localStorage.getItem('thirst') || '80');
+      clean = parseInt(localStorage.getItem('clean') || '80');
+      happy = parseInt(localStorage.getItem('happy') || '80');
+      outfit = parseInt(localStorage.getItem('outfit') || '-1');
+      bg = parseInt(localStorage.getItem('bg') || '0');
+    }
+
+    // --- Adoption Screen Logic ---
+    document.getElementById('adoptBtn').onclick = () => {
+      const name = document.getElementById('nameInput').value.trim();
+      if (name.length > 0) {
+        waterdropName = name;
+        saveState();
+        showDashboard();
+      } else {
+        alert('Please enter a name!');
+      }
+    };
+
+    // --- Dashboard Logic ---
+    function showDashboard() {
+      showScreen('dashboardScreen');
+      document.getElementById('dashboardHeader').textContent =
+        `Welcome, ${waterdropName}!`;
+      updateBars();
+      updateOutfit();
+      updateBg();
+      // Draw main waterdrop SVG
+      document.getElementById('mainDrop').innerHTML = `
+        <svg width="120" height="140" viewBox="0 0 120 140">
+          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
+          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
+          <ellipse cx="60" cy="70" rx="14" ry="16" fill="#fff" opacity="0.7"/>
+          <ellipse cx="48" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="72" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="48" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="72" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="42" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
+          <ellipse cx="78" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
+          <path d="M52 112 Q60 118 68 112" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    // --- Clean Modal Logic ---
+    function showClean() {
+      document.getElementById('cleanModal').style.display = 'flex';
+      document.getElementById('dirtyDrop').innerHTML = `
+        <svg width="120" height="140" viewBox="0 0 120 140">
+          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
+          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
+          <ellipse cx="60" cy="70" rx="14" ry="16" fill="#fff" opacity="0.7"/>
+          <ellipse cx="48" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="72" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="48" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="72" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
+          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
+          <ellipse cx="60" cy="70" rx="14" ry="16" fill="#fff" opacity="0.7"/>
+          <ellipse cx="48" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="72" cy="100" rx="8" ry="10" fill="#fff"/>
+          <ellipse cx="48" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="72" cy="102" rx="3" ry="4" fill="#333"/>
+          <ellipse cx="42" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
+          <ellipse cx="78" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
+          <path d="M52 112 Q60 118 68 112" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="90" cy="90" rx="6" ry="3" fill="#b3b3b3" opacity="0.7"/>
+          <ellipse cx="40" cy="120" rx="5" ry="2" fill="#b3b3b3" opacity="0.7"/>
+        </svg>
+      `;
+    }
+    function cleanAction(type) {
+      clean = Math.min(100, clean + 10);
+      updateBars();
+    }
+
+    // --- Play Modal Logic ---
+    function showPlay() {
+      document.getElementById('playModal').style.display = 'flex';
+      document.getElementById('playMsg').textContent = '';
+    }
+    function playAction(type) {
+      happy = Math.min(100, happy + 10);
+      updateBars();
+      document.getElementById('playMsg').textContent = `You played: ${type}!`;
+    }
+
+    // --- Dress Up Modal Logic ---
+    function showDressUp() {
+      document.getElementById('dressModal').style.display = 'flex';
+    }
+    function chooseOutfit(idx) {
+      outfit = idx;
+      updateOutfit();
+      saveState();
+    }
+
+    // --- Background Modal Logic ---
+    function showBg() {
+      document.getElementById('bgModal').style.display = 'flex';
+    }
+    function chooseBg(idx) {
+      bg = idx;
+      updateBg();
+      saveState();
+    }
+
+    // --- Modal Close Logic ---
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+      if (id === 'feedModal' && window._currentFeedGameInterval) {
+        clearInterval(window._currentFeedGameInterval);
+        window._currentFeedGameInterval = null;
+      }
+    }
+
+    // --- Restart Logic ---
+    const restartBtn = document.getElementById('restartBtn');
+    restartBtn.onclick = function() {
+      // Show the restart confirmation modal
+      document.getElementById('restartModal').style.display = 'flex';
+    };
+    function restartAdoption() {
+      // Remove all saved state from localStorage
+
+
+      localStorage.removeItem('waterdropName');
+      localStorage.removeItem('thirst');
+      localStorage.removeItem('clean');
+      localStorage.removeItem('happy');
+      localStorage.removeItem('outfit');
+      localStorage.removeItem('bg');
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+      // Show the adoption screen
+      document.getElementById('adoptScreen').classList.add('visible');
+      // Hide the modal
+      closeModal('restartModal');
+    }
+
+    // --- Splash Screen Logic ---
+    // Show splash screen for 5 seconds, then show Play Game button
+    const splashScreen = document.getElementById('splashScreen');
+    const playGameBtn = document.getElementById('playGameBtn');
+
+    // Show Play Game button after 5 seconds
+    setTimeout(() => {
+      playGameBtn.style.display = 'inline-block';
+    }, 5000);
+
+    // Allow clicking Play Game at any time
+    playGameBtn.onclick = () => {
+      splashScreen.classList.remove('visible');
+      showScreen('adoptScreen');
+    };
+
+    // Helper: show splash screen and reset Play Game button
+    function showSplashScreen() {
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+      // Show splash
+      splashScreen.classList.add('visible');
+      playGameBtn.style.display = 'none';
+      // Show Play Game button after 5 seconds
+      setTimeout(() => {
+        playGameBtn.style.display = 'inline-block';
+      }, 5000);
+    }
+
+    // When restarting, show splash screen
+    function restartAdoption() {
+      localStorage.removeItem('waterdropName');
+      localStorage.removeItem('thirst');
+      localStorage.removeItem('clean');
+      localStorage.removeItem('happy');
+      localStorage.removeItem('outfit');
+      localStorage.removeItem('bg');
+      closeModal('restartModal');
+      showSplashScreen();
+    }
+
+    // If any bar reaches 0, show splash screen
+    function checkGameOver() {
+      if (thirst <= 0 && clean <= 0 && happy <= 0) {
+        showSplashScreen();
+      }
+    }
+
+    // Call checkGameOver() after updating bars in your code, for example:
+    function updateBars() {
+      // Set the width as a percent for each bar
+      document.getElementById('thirstBar').style.width = `${thirst}%`;
+      document.getElementById('cleanBar').style.width = `${clean}%`;
+      document.getElementById('happyBar').style.width = `${happy}%`;
+      checkGameOver(); // Check if all bars are zero
+    }
+
+    // On page load, show splash screen first
+    window.onload = function() {
+      showSplashScreen();
+    };
+
+    // --- This code makes all action buttons open their modals and close them
+
+    // Function to show a modal by its ID
+    function showModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.style.display = 'block'; // Show the modal
+      }
+    }
+
+    // Function to close a modal by its ID
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.style.display = 'none'; // Hide the modal
+      }
+    }
+
+    // Get all action buttons by their IDs
+    const feedBtn = document.getElementById('feedBtn');
+    const playBtn = document.getElementById('playBtn');
+    const cleanBtn = document.getElementById('cleanBtn');
+    const dressBtn = document.getElementById('dressBtn');
+    const bgBtn = document.getElementById('bgBtn');
+
+    // Add click events to each button to show the correct modal
+    feedBtn && feedBtn.addEventListener('click', function() {
+      showModal('feedModal');
+    });
+    playBtn && playBtn.addEventListener('click', function() {
+      showModal('playModal');
+    });
+    cleanBtn && cleanBtn.addEventListener('click', function() {
+      showModal('cleanModal');
+    });
+    dressBtn && dressBtn.addEventListener('click', function() {
+      showModal('dressModal');
+    });
+    bgBtn && bgBtn.addEventListener('click', function() {
+      showModal('bgModal');
+    });
+
+    // Get all close buttons by their IDs
+    const closeFeedModal = document.getElementById('closeFeedModal');
+    const closePlayModal = document.getElementById('closePlayModal');
+    const closeCleanModal = document.getElementById('closeCleanModal');
+    const closeDressModal = document.getElementById('closeDressModal');
+    const closeBgModal = document.getElementById('closeBgModal');
+
+    // Add click events to each close button to hide the modal
+    closeFeedModal && closeFeedModal.addEventListener('click', function() {
+      closeModal('feedModal');
+    });
+    closePlayModal && closePlayModal.addEventListener('click', function() {
+      closeModal('playModal');
+    });
+    closeCleanModal && closeCleanModal.addEventListener('click', function() {
+      closeModal('cleanModal');
+    });
+    closeDressModal && closeDressModal.addEventListener('click', function() {
+      closeModal('dressModal');
+    });
+    closeBgModal && closeBgModal.addEventListener('click', function() {
+      closeModal('bgModal');
+    });
+    // Beginner-friendly: Show the Feed modal and start the card shuffle minigame
+
+    // Get the Feed button and modal close button
+    // feedBtn is already declared above, so we only need to get closeFeedModal here
+    // (Already declared above, so this line is removed to prevent redeclaration)
+
+    // When Feed button is clicked, show the modal and start the minigame
+    feedBtn && feedBtn.addEventListener('click', function() {
+      document.getElementById('feedModal').style.display = 'flex';
+      startFeedCardShuffleGame();
+    });
+
+    // When close button is clicked, hide the modal
+    closeFeedModal && closeFeedModal.addEventListener('click', function() {
+      document.getElementById('feedModal').style.display = 'none';
+    });
+
+    // The card shuffle minigame code
+    function startFeedCardShuffleGame() {
+      const area = document.getElementById('feedGameArea');
+      area.innerHTML = ''; // Clear previous content
+
+      document.getElementById('feedGameMsg').textContent = '';
+      const scoreFill = document.getElementById('feedScoreFill');
+      if (scoreFill) scoreFill.style.width = '0';
+
+      // 8 blue 💧, 4 brown 🟤 cards
+      const cards = [];
+      for (let i = 0; i < 8; i++) {
+        cards.push({ type: 'clean' });
+      }
+      for (let i = 0; i < 4; i++) {
+        cards.push({ type: 'dirty' });
+      }
+
+      // Shuffle cards
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+
+      // Card grid
+      const grid = document.createElement('div');
+      grid.style.display = 'grid';
+      grid.style.gridTemplateColumns = 'repeat(4, 60px)';
+      grid.style.gridTemplateRows = 'repeat(3, 80px)';
+      grid.style.gridGap = '12px';
+      grid.style.justifyContent = 'center';
+      grid.style.margin = '24px 0';
+
+      // Charity: water logo SVG for card back
+      const charityLogo = `
+        <svg width="32" height="32" viewBox="0 0 32 32">
+          <rect x="6" y="6" width="20" height="20" rx="4" fill="#ffe066" stroke="#e6b800" stroke-width="2"/>
+          <rect x="13" y="13" width="6" height="10" rx="2" fill="#fff" stroke="#e6b800" stroke-width="1"/>
+          <rect x="15" y="10" width="2" height="3" rx="1" fill="#e6b800"/>
+        </svg>
+      `;
+
+      // Show all cards face up for 1.5 seconds
+      let cardDivs = [];
+      cards.forEach((card, idx) => {
+        const cardDiv = document.createElement('button');
+        cardDiv.style.width = '60px';
+        cardDiv.style.height = '80px';
+        cardDiv.style.fontSize = '2rem';
+        cardDiv.style.background = '#fff';
+        cardDiv.style.border = '2px solid #b3e0ff';
+        cardDiv.style.borderRadius = '8px';
+        cardDiv.style.cursor = 'pointer';
+        cardDiv.style.display = 'flex';
+        cardDiv.style.alignItems = 'center';
+        cardDiv.style.justifyContent = 'center';
+        cardDiv.style.position = 'relative';
+        cardDiv.disabled = true; // Disable until shuffle is done
+        cardDiv.innerHTML = card.type === 'clean' ? '💧' : '🟤';
+        cardDivs.push(cardDiv);
+        grid.appendChild(cardDiv);
+      });
+
+      area.appendChild(grid);
+
+      // After 1.5 seconds, flip all cards to show the logo
+      setTimeout(() => {
+        cardDivs.forEach(cardDiv => {
+          cardDiv.innerHTML = charityLogo;
+          cardDiv.disabled = true;
+        });
+
+        // Shuffle animation: swap cards visually several times
+        let shuffleCount = 12;
+        let shuffleInterval = setInterval(() => {
+          for (let i = 0; i < 4; i++) {
+            const idx1 = Math.floor(Math.random() * 12);
+            const idx2 = Math.floor(Math.random() * 12);
+            if (idx1 !== idx2) {
+              grid.insertBefore(cardDivs[idx2], cardDivs[idx1]);
+              [cardDivs[idx1], cardDivs[idx2]] = [cardDivs[idx2], cardDivs[idx1]];
+            }
+          }
+          shuffleCount--;
+          if (shuffleCount === 0) {
+            clearInterval(shuffleInterval);
+            // Enable all cards for selection
+            cardDivs.forEach(cardDiv => {
+              cardDiv.disabled = false;
+            });
+          }
+        }, 80);
+
+        // When a card is clicked, reveal it and handle points
+        cardDivs.forEach((cardDiv, idx) => {
+          cardDiv.onclick = function () {
+            if (cardDiv.disabled) return;
+            cardDiv.innerHTML = cards[idx].type === 'clean' ? '💧' : '🟤';
+            cardDiv.disabled = true;
+
+            if (cards[idx].type === 'clean') {
+              // Blue drop: increase thirst by 5
+              thirst = Math.min(100, (typeof thirst === 'number' ? thirst : 50) + 5);
+              updateBars && updateBars();
+              document.getElementById('feedGameMsg').textContent = "Yay! You found clean water!";
+            } else {
+              // Brown drop: decrease all bars by 10
+              thirst = Math.max(0, (typeof thirst === 'number' ? thirst : 50) - 10);
+              clean = Math.max(0, (typeof clean === 'number' ? clean : 50) - 10);
+              happy = Math.max(0, (typeof happy === 'number' ? happy : 50) - 10);
+              updateBars && updateBars();
+              document.getElementById('feedGameMsg').textContent = "Oh no! Dirty water! All bars -10.";
+              // Reveal all cards and disable all
+              cardDivs.forEach((btn, i) => {
+                btn.innerHTML = cards[i].type === 'clean' ? '💧' : '🟤';
+                btn.disabled = true;
+              });
+            }
+          };
+        });
+
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
