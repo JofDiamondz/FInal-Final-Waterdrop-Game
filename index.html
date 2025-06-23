@@ -4,16 +4,42 @@
   <meta charset="UTF-8">
   <title>My Little Waterdrop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Cute, rounded font -->
-  <link href="https://fonts.googleapis.com/css?family=Baloo+2:700|Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Use Montserrat as a close match to Proxima Nova/Avenir -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Baloo 2', 'Poppins', Arial, sans-serif;
+      /* Use Montserrat, fallback to Avenir, then sans-serif */
+      font-family: 'Montserrat', 'Avenir', Arial, sans-serif;
       background: linear-gradient(180deg, #b3e0ff 0%, #a3f7bf 100%);
       min-height: 100vh;
       color: #333;
       transition: background 0.5s;
+    }
+    /* Apply font to all text elements for consistency */
+    .screen,
+    .header,
+    .adopt-box,
+    .cute-btn,
+    .cute-input,
+    .modal,
+    .modal-content,
+    .modal-note,
+    .bar-label,
+    .bar-bg,
+    .bar-fill,
+    .status-bars,
+    .side-buttons,
+    .modal-actions,
+    .modal-img,
+    .modal-close,
+    #charityFooter,
+    label,
+    button,
+    input,
+    select,
+    textarea {
+      font-family: 'Montserrat', 'Avenir', Arial, sans-serif !important;
     }
     .screen {
       display: none;
@@ -269,6 +295,27 @@
     button:hover {
       background: #e0f7fa;
     }
+
+    /* Charity: water Footer */
+    #charityFooter {
+      position:fixed;
+      left:0; right:0; bottom:0;
+      background:rgba(255,255,255,0.95);
+      color:#00bfff;
+      font-family:'Baloo 2', 'Poppins', Arial, sans-serif;
+      font-size:1.1rem;
+      text-align:center;
+      padding:12px 0 10px 0;
+      z-index:200;
+      box-shadow:0 -2px 12px #b3e0ff44;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      opacity:0;
+      transform:translateY(40px);
+      transition:opacity 0.7s, transform 0.7s;
+    }
   </style>
 </head>
 <body>
@@ -319,6 +366,68 @@
       </div>
       <button id="adoptBtn" class="cute-btn">Adopt!</button>
     </div>
+  </div>
+
+  <!-- Difficulty Screen -->
+  <div id="difficultyScreen" class="screen" style="flex-direction:column;align-items:center;">
+    <div class="header">Choose Difficulty</div>
+    <div style="display:flex;flex-direction:column;gap:18px;margin-top:24px;">
+      <!-- Easy: White cloud, drizzle audio -->
+      <button class="cute-btn" id="easyBtn" style="background:none;box-shadow:none;padding:0;">
+        <span style="display:flex;flex-direction:column;align-items:center;">
+          <!-- White cloud SVG -->
+          <svg width="90" height="60" viewBox="0 0 90 60">
+            <ellipse cx="35" cy="40" rx="30" ry="18" fill="#fff"/>
+            <ellipse cx="55" cy="38" rx="22" ry="14" fill="#e0f7fa"/>
+            <ellipse cx="60" cy="46" rx="18" ry="10" fill="#fff"/>
+            <!-- Drizzle drops -->
+            <ellipse cx="30" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
+            <ellipse cx="45" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
+            <ellipse cx="60" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
+          </svg>
+          <span style="color:#00bfff;font-weight:bold;font-size:1.1rem;">Easy</span>
+        </span>
+      </button>
+      <!-- Normal: Grey cloud, rain audio -->
+      <button class="cute-btn" id="normalBtn" style="background:none;box-shadow:none;padding:0;">
+        <span style="display:flex;flex-direction:column;align-items:center;">
+          <!-- Grey cloud SVG -->
+          <svg width="90" height="60" viewBox="0 0 90 60">
+            <ellipse cx="35" cy="40" rx="30" ry="18" fill="#b0bec5"/>
+            <ellipse cx="55" cy="38" rx="22" ry="14" fill="#90a4ae"/>
+            <ellipse cx="60" cy="46" rx="18" ry="10" fill="#cfd8dc"/>
+            <!-- Rain drops -->
+            <ellipse cx="30" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
+            <ellipse cx="45" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
+            <ellipse cx="60" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
+          </svg>
+          <span style="color:#607d8b;font-weight:bold;font-size:1.1rem;">Normal</span>
+        </span>
+      </button>
+      <!-- Hard: Black stormy cloud, lightning, thunder audio -->
+      <button class="cute-btn" id="hardBtn" style="background:none;box-shadow:none;padding:0;">
+        <span style="display:flex;flex-direction:column;align-items:center;">
+          <!-- Black stormy cloud SVG with lightning -->
+          <svg width="90" height="60" viewBox="0 0 90 60">
+            <ellipse cx="35" cy="40" rx="30" ry="18" fill="#222"/>
+            <ellipse cx="55" cy="38" rx="22" ry="14" fill="#444"/>
+            <ellipse cx="60" cy="46" rx="18" ry="10" fill="#333"/>
+            <!-- Lightning bolt -->
+            <polygon points="55,50 65,50 60,60 68,60 58,75 62,62 54,62" fill="#ffe066" stroke="#ffeb3b" stroke-width="1"/>
+          </svg>
+          <span style="color:#222;font-weight:bold;font-size:1.1rem;">Hard</span>
+        </span>
+      </button>
+    </div>
+    <div style="margin-top:18px;font-size:1rem;color:#00bfff;">
+      <b>Easy:</b> Reach 80 in all bars.<br>
+      <b>Normal:</b> Reach 100 in all bars.<br>
+      <b>Hard:</b> Reach 100 in all bars in 2 minutes.<br>
+    </div>
+    <!-- Audio elements (hidden) -->
+    <audio id="audioDrizzle" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae2e7.mp3" preload="auto"></audio>
+    <audio id="audioRain" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae2e7.mp3" preload="auto"></audio>
+    <audio id="audioThunder" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9e2e3c.mp3" preload="auto"></audio>
   </div>
 
   <!-- Dashboard/Main Screen -->
@@ -461,6 +570,30 @@
     </div>
   </div>
 
+  <!-- Game Over Modal -->
+  <div id="gameOverModal" class="modal">
+    <div class="modal-content">
+      <div style="font-size:3rem;margin-bottom:12px;">
+        <!-- Sad waterdrop SVG with X eyes -->
+        <svg width="80" height="90" viewBox="0 0 120 140">
+          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
+          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
+          <!-- X eyes -->
+          <line x1="44" y1="98" x2="52" y2="106" stroke="#333" stroke-width="3"/>
+          <line x1="52" y1="98" x2="44" y2="106" stroke="#333" stroke-width="3"/>
+          <line x1="68" y1="98" x2="76" y2="106" stroke="#333" stroke-width="3"/>
+          <line x1="76" y1="98" x2="68" y2="106" stroke="#333" stroke-width="3"/>
+          <!-- Sad mouth -->
+          <path d="M52 116 Q60 110 68 116" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div id="gameOverMsg" style="font-size:1.1rem;margin-bottom:18px;">
+        <!-- Message will be set by JS -->
+      </div>
+      <button class="cute-btn" onclick="restartAdoption()">Start Over</button>
+    </div>
+  </div>
+
   <!-- Feed Button -->
   <button id="feedBtn">Feed</button>
 
@@ -475,6 +608,55 @@
     </div>
   </div>
 
+  <!-- Charity: water Footer -->
+  <footer id="charityFooter" style="
+    position:fixed;
+    left:0; right:0; bottom:0;
+    background:rgba(255,255,255,0.95);
+    color:#00bfff;
+    font-family:'Baloo 2', 'Poppins', Arial, sans-serif;
+    font-size:1.1rem;
+    text-align:center;
+    padding:12px 0 10px 0;
+    z-index:200;
+    box-shadow:0 -2px 12px #b3e0ff44;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    opacity:0;
+    transform:translateY(40px);
+    transition:opacity 0.7s, transform 0.7s;
+  ">
+    <a href="https://charitywater.org" target="_blank" style="color:#00bfff;text-decoration:none;font-weight:bold;letter-spacing:1px;">
+      Support clean water for all at charity: water
+    </a>
+  </footer>
+
+  <script>
+    // Show the footer gently when the page loads or when a screen is shown
+    function showFooter() {
+      const footer = document.getElementById('charityFooter');
+      if (footer) {
+        footer.style.opacity = '1';
+        footer.style.transform = 'translateY(0)';
+      }
+    }
+    // Hide the footer (if you ever want to)
+    function hideFooter() {
+      const footer = document.getElementById('charityFooter');
+      if (footer) {
+        footer.style.opacity = '0';
+        footer.style.transform = 'translateY(40px)';
+      }
+    }
+    // Always show footer after DOM is ready
+    window.addEventListener('DOMContentLoaded', showFooter);
+
+    // Optionally, show footer again when switching screens
+    // (Beginner: just call showFooter() in showScreen if you want)
+  </script>
+
   <script>
     // --- State Variables ---
     let waterdropName = '';
@@ -484,6 +666,26 @@
     let happy = 50;
     let outfit = -1;
     let bg = 0;
+
+    // --- Difficulty State ---
+    let difficulty = 'easy'; // 'easy', 'normal', 'hard'
+    let winGoal = 80; // 80 for easy, 100 for normal/hard
+    let barDropInterval = null;
+    let hardTimer = null;
+    let hardTimeLeft = 120; // seconds
+
+    // --- Milestone Messages ---
+    const milestones = [
+      { threshold: 30, message: "🌱 Off to a good start!" },
+      { threshold: 50, message: "🚰 Halfway there!" },
+      { threshold: 75, message: "🌟 You're doing great!" },
+      { threshold: 100, message: "🏆 You're a waterdrop hero!" }
+    ];
+
+    // Keep track of last milestone shown for each bar
+    let thirstMilestone = 0;
+    let cleanMilestone = 0;
+    let happyMilestone = 0;
 
     // --- Helper Functions ---
     function showScreen(id) {
@@ -497,6 +699,13 @@
       document.getElementById('thirstBar').style.width = `${thirst}%`;
       document.getElementById('cleanBar').style.width = `${clean}%`;
       document.getElementById('happyBar').style.width = `${happy}%`;
+
+      // Check milestones for each bar
+      thirstMilestone = checkMilestone(thirst, thirstMilestone, "Thirst");
+      cleanMilestone = checkMilestone(clean, cleanMilestone, "Clean");
+      happyMilestone = checkMilestone(happy, happyMilestone, "Happy");
+
+      checkGameOver(); // Check if all bars are zero
     }
     // Call this once at the start to set the bars to half
     updateBars();
@@ -544,11 +753,41 @@
       if (name.length > 0) {
         waterdropName = name;
         saveState();
-        showDashboard();
+        showScreen('difficultyScreen');
       } else {
         alert('Please enter a name!');
       }
     };
+
+    // --- Difficulty Screen Logic ---
+    document.getElementById('easyBtn').onclick = function() {
+      difficulty = 'easy';
+      winGoal = 80;
+      startGameWithDifficulty();
+    };
+    document.getElementById('normalBtn').onclick = function() {
+      difficulty = 'normal';
+      winGoal = 100;
+      startGameWithDifficulty();
+    };
+    document.getElementById('hardBtn').onclick = function() {
+      difficulty = 'hard';
+      winGoal = 100;
+      startGameWithDifficulty();
+    };
+
+    function startGameWithDifficulty() {
+      // Reset bars for new game
+      thirst = 50;
+      clean = 50;
+      happy = 50;
+      saveState();
+      showDashboard();
+      startBarDrop();
+      if (difficulty === 'hard') {
+        startHardTimer();
+      }
+    }
 
     // --- Dashboard Logic ---
     function showDashboard() {
@@ -575,67 +814,116 @@
       `;
     }
 
-    // --- Clean Modal Logic ---
-    function showClean() {
-      document.getElementById('cleanModal').style.display = 'flex';
-      document.getElementById('dirtyDrop').innerHTML = `
-        <svg width="120" height="140" viewBox="0 0 120 140">
-          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
-          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
-          <ellipse cx="60" cy="70" rx="14" ry="16" fill="#fff" opacity="0.7"/>
-          <ellipse cx="48" cy="100" rx="8" ry="10" fill="#fff"/>
-          <ellipse cx="72" cy="100" rx="8" ry="10" fill="#fff"/>
-          <ellipse cx="48" cy="102" rx="3" ry="4" fill="#333"/>
-          <ellipse cx="72" cy="102" rx="3" ry="4" fill="#333"/>
-          <ellipse cx="60" cy="80" rx="48" ry="58" fill="#b3e0ff"/>
-          <ellipse cx="60" cy="80" rx="36" ry="46" fill="#00bfff"/>
-          <ellipse cx="60" cy="70" rx="14" ry="16" fill="#fff" opacity="0.7"/>
-          <ellipse cx="48" cy="100" rx="8" ry="10" fill="#fff"/>
-          <ellipse cx="72" cy="100" rx="8" ry="10" fill="#fff"/>
-          <ellipse cx="48" cy="102" rx="3" ry="4" fill="#333"/>
-          <ellipse cx="72" cy="102" rx="3" ry="4" fill="#333"/>
-          <ellipse cx="42" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
-          <ellipse cx="78" cy="112" rx="4" ry="2" fill="#ffb6b6" opacity="0.7"/>
-          <path d="M52 112 Q60 118 68 112" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <ellipse cx="90" cy="90" rx="6" ry="3" fill="#b3b3b3" opacity="0.7"/>
-          <ellipse cx="40" cy="120" rx="5" ry="2" fill="#b3b3b3" opacity="0.7"/>
-        </svg>
-      `;
-    }
-    function cleanAction(type) {
-      clean = Math.min(100, clean + 10);
-      updateBars();
+    // --- Bar Drop Logic ---
+    function startBarDrop() {
+      // Clear any previous interval
+      if (barDropInterval) clearInterval(barDropInterval);
+
+      // Set drop speed based on difficulty
+      let dropTime = 0;
+      let dropAmount = 0;
+      if (difficulty === 'easy') {
+        dropTime = 6000; // 6 seconds
+        dropAmount = 1;
+      } else if (difficulty === 'normal') {
+        dropTime = 4000; // 4 seconds
+        dropAmount = 2;
+      } else {
+        dropTime = 2000; // 2 seconds
+        dropAmount = 3;
+      }
+
+      // Drop bars over time
+      barDropInterval = setInterval(() => {
+        // Only drop if on dashboard
+        if (!document.getElementById('dashboardScreen').classList.contains('visible')) return;
+        thirst = Math.max(0, thirst - dropAmount);
+        clean = Math.max(0, clean - dropAmount);
+        happy = Math.max(0, happy - dropAmount);
+        updateBars();
+        checkGameOver();
+        checkWin();
+      }, dropTime);
     }
 
-    // --- Play Modal Logic ---
-    function showPlay() {
-      document.getElementById('playModal').style.display = 'flex';
-      document.getElementById('playMsg').textContent = '';
-    }
-    function playAction(type) {
-      happy = Math.min(100, happy + 10);
-      updateBars();
-      document.getElementById('playMsg').textContent = `You played: ${type}!`;
-    }
-
-    // --- Dress Up Modal Logic ---
-    function showDressUp() {
-      document.getElementById('dressModal').style.display = 'flex';
-    }
-    function chooseOutfit(idx) {
-      outfit = idx;
-      updateOutfit();
-      saveState();
+    // --- Hard Mode Timer ---
+    function startHardTimer() {
+      hardTimeLeft = 120; // 2 minutes
+      if (hardTimer) clearInterval(hardTimer);
+      // Show timer on dashboard header
+      hardTimer = setInterval(() => {
+        hardTimeLeft--;
+        document.getElementById('dashboardHeader').textContent =
+          `Welcome, ${waterdropName}! ⏰ ${hardTimeLeft}s`;
+        if (hardTimeLeft <= 0) {
+          showGameOver('time');
+        }
+      }, 1000);
     }
 
-    // --- Background Modal Logic ---
-    function showBg() {
-      document.getElementById('bgModal').style.display = 'flex';
+    // --- Check Win Condition ---
+    function checkWin() {
+      // Easy: win at 80+, Normal/Hard: win at 100
+      if (
+        thirst >= winGoal &&
+        clean >= winGoal &&
+        happy >= winGoal
+      ) {
+        // Stop timers
+        if (barDropInterval) clearInterval(barDropInterval);
+        if (hardTimer) clearInterval(hardTimer);
+        // Show win message
+        alert(`Congratulations! You took great care of ${waterdropName}!`);
+        restartAdoption();
+      }
     }
-    function chooseBg(idx) {
-      bg = idx;
-      updateBg();
-      saveState();
+
+    // --- Game Over Logic ---
+    function checkGameOver() {
+      // If any bar reaches 0, game over
+      if (thirst <= 0 || clean <= 0 || happy <= 0) {
+        showGameOver('bars');
+      }
+    }
+
+    // --- Show Game Over Modal ---
+    function showGameOver(reason) {
+      // Stop timers
+      if (barDropInterval) clearInterval(barDropInterval);
+      if (hardTimer) clearInterval(hardTimer);
+
+      // Set message
+      let msg = '';
+      if (reason === 'bars') {
+        msg = `Oh no! We couldn't take care of ${waterdropName} properly.<br>Let's start over to learn the importance of protecting our water.`;
+      } else {
+        msg = `Time's up! We couldn't help ${waterdropName} in time.<br>Let's try again and protect our water!`;
+      }
+      document.getElementById('gameOverMsg').innerHTML = msg;
+
+      // Show modal
+      document.getElementById('gameOverModal').style.display = 'flex';
+    }
+
+    // --- Restart Adoption (also hides Game Over modal) ---
+    function restartAdoption() {
+      // Remove all saved state from localStorage
+      localStorage.removeItem('waterdropName');
+      localStorage.removeItem('thirst');
+      localStorage.removeItem('clean');
+      localStorage.removeItem('happy');
+      localStorage.removeItem('outfit');
+      localStorage.removeItem('bg');
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+      // Show the adoption screen
+      document.getElementById('adoptScreen').classList.add('visible');
+      // Hide modals
+      document.getElementById('gameOverModal').style.display = 'none';
+      closeModal('restartModal');
+      // Stop timers
+      if (barDropInterval) clearInterval(barDropInterval);
+      if (hardTimer) clearInterval(hardTimer);
     }
 
     // --- Modal Close Logic ---
@@ -694,7 +982,7 @@
       // Show splash
       splashScreen.classList.add('visible');
       playGameBtn.style.display = 'none';
-      // Show Play Game button after 5 seconds
+                // Show Play Game button after 5 seconds
       setTimeout(() => {
         playGameBtn.style.display = 'inline-block';
       }, 5000);
@@ -739,6 +1027,7 @@
     function showModal(id) {
       const modal = document.getElementById(id);
       if (modal) {
+
         modal.style.display = 'block'; // Show the modal
       }
     }
@@ -814,7 +1103,7 @@
       document.getElementById('feedModal').style.display = 'none';
     });
 
-    // The card shuffle minigame code
+    // --- Feed Minigame: Click to remove cards, play sound, and update bars ---
     function startFeedCardShuffleGame() {
       const area = document.getElementById('feedGameArea');
       area.innerHTML = ''; // Clear previous content
@@ -823,7 +1112,7 @@
       const scoreFill = document.getElementById('feedScoreFill');
       if (scoreFill) scoreFill.style.width = '0';
 
-      // 8 blue 💧, 4 brown 🟤 cards
+      // 8 blue 💧, 4 brown 💩 cards (💩 for dirty water)
       const cards = [];
       for (let i = 0; i < 8; i++) {
         cards.push({ type: 'clean' });
@@ -847,7 +1136,7 @@
       grid.style.justifyContent = 'center';
       grid.style.margin = '24px 0';
 
-      // Charity: water logo SVG for card back
+      // Card back SVG
       const charityLogo = `
         <svg width="32" height="32" viewBox="0 0 32 32">
           <rect x="6" y="6" width="20" height="20" rx="4" fill="#ffe066" stroke="#e6b800" stroke-width="2"/>
@@ -855,6 +1144,9 @@
           <rect x="15" y="10" width="2" height="3" rx="1" fill="#e6b800"/>
         </svg>
       `;
+
+      // Sound for sad/dirty water
+      const sadSound = new Audio('https://cdn.pixabay.com/audio/2022/10/16/audio_12c3e9b6e7.mp3');
 
       // Show all cards face up for 1.5 seconds
       let cardDivs = [];
@@ -872,7 +1164,7 @@
         cardDiv.style.justifyContent = 'center';
         cardDiv.style.position = 'relative';
         cardDiv.disabled = true; // Disable until shuffle is done
-        cardDiv.innerHTML = card.type === 'clean' ? '💧' : '🟤';
+        cardDiv.innerHTML = card.type === 'clean' ? '💧' : '💩';
         cardDivs.push(cardDiv);
         grid.appendChild(cardDiv);
       });
@@ -890,11 +1182,19 @@
         let shuffleCount = 12;
         let shuffleInterval = setInterval(() => {
           for (let i = 0; i < 4; i++) {
-            const idx1 = Math.floor(Math.random() * 12);
-            const idx2 = Math.floor(Math.random() * 12);
+            // Pick two random indexes
+            const idx1 = Math.floor(Math.random() * cardDivs.length);
+            const idx2 = Math.floor(Math.random() * cardDivs.length);
             if (idx1 !== idx2) {
-              grid.insertBefore(cardDivs[idx2], cardDivs[idx1]);
+              // Swap the DOM elements in the grid
+              const node1 = cardDivs[idx1];
+              const node2 = cardDivs[idx2];
+              // Swap in DOM
+              grid.insertBefore(node2, node1);
+              // Swap in array
               [cardDivs[idx1], cardDivs[idx2]] = [cardDivs[idx2], cardDivs[idx1]];
+              // Also swap the cards array so the logic matches the new positions
+              [cards[idx1], cards[idx2]] = [cards[idx2], cards[idx1]];
             }
           }
           shuffleCount--;
@@ -907,36 +1207,162 @@
           }
         }, 80);
 
-        // When a card is clicked, reveal it and handle points
+        // When a card is clicked, reveal it, remove it, and handle points
         cardDivs.forEach((cardDiv, idx) => {
           cardDiv.onclick = function () {
             if (cardDiv.disabled) return;
-            cardDiv.innerHTML = cards[idx].type === 'clean' ? '💧' : '🟤';
-            cardDiv.disabled = true;
+            // Show the emoji
+            cardDiv.innerHTML = cards[idx].type === 'clean' ? '💧' : '💩';
+            // Remove the card after a short delay
+            setTimeout(() => {
+              cardDiv.remove();
+            }, 400);
 
             if (cards[idx].type === 'clean') {
-              // Blue drop: increase thirst by 5
               thirst = Math.min(100, (typeof thirst === 'number' ? thirst : 50) + 5);
               updateBars && updateBars();
-              document.getElementById('feedGameMsg').textContent = "Yay! You found clean water!";
+              document.getElementById('feedGameMsg').textContent = "Yay! That was fun!";
+              if (thirst === 100) showSparkle('thirstBar');
             } else {
-              // Brown drop: decrease all bars by 10
-              thirst = Math.max(0, (typeof thirst === 'number' ? thirst : 50) - 10);
-              clean = Math.max(0, (typeof clean === 'number' ? clean : 50) - 10);
-              happy = Math.max(0, (typeof happy === 'number' ? happy : 50) - 10);
-              updateBars && updateBars();
-              document.getElementById('feedGameMsg').textContent = "Oh no! Dirty water! All bars -10.";
-              // Reveal all cards and disable all
-              cardDivs.forEach((btn, i) => {
-                btn.innerHTML = cards[i].type === 'clean' ? '💧' : '🟤';
-                btn.disabled = true;
-              });
+              sadSound.currentTime = 0;
+              sadSound.play();
+              if (difficulty === 'easy') {
+                document.getElementById('feedGameMsg').textContent = "Oops! Dirty water!";
+              } else if (difficulty === 'normal') {
+                thirst = Math.max(0, (typeof thirst === 'number' ? thirst : 50) - 10);
+                updateBars && updateBars();
+                document.getElementById('feedGameMsg').textContent = "Oh no! Dirty water! Thirst -10.";
+              } else {
+                thirst = Math.max(0, (typeof thirst === 'number' ? thirst : 50) - 10);
+                clean = Math.max(0, (typeof clean === 'number' ? clean : 50) - 10);
+                happy = Math.max(0, (typeof happy === 'number' ? happy : 50) - 10);
+                updateBars && updateBars();
+                document.getElementById('feedGameMsg').textContent = "Oh no! Dirty water! All bars -10.";
+              }
             }
           };
         });
 
       }, 1500);
     }
+
+    // --- Sparkle Animation when a bar reaches 100 ---
+    function showSparkle(barId) {
+      // Find the bar element
+      const bar = document.getElementById(barId);
+      if (!bar) return;
+      // Create a sparkle emoji
+      const sparkle = document.createElement('span');
+      sparkle.textContent = '✨';
+      sparkle.style.position = 'absolute';
+      sparkle.style.left = '90%';
+      sparkle.style.top = '-18px';
+      sparkle.style.fontSize = '1.5rem';
+      sparkle.style.animation = 'sparklePop 1s ease';
+      sparkle.style.pointerEvents = 'none';
+      // Add sparkle to the bar
+      bar.parentElement.style.position = 'relative';
+      bar.parentElement.appendChild(sparkle);
+      // Remove sparkle after animation
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1000);
+    }
+
+    // Add sparkle animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+    @keyframes sparklePop {
+      0% { opacity: 0; transform: scale(0.5);}
+      50% { opacity: 1; transform: scale(1.3);}
+      100% { opacity: 0; transform: scale(1);}
+    }`;
+    document.head.appendChild(style);
+
+    // --- CLEAN MINIGAME BUTTONS ---
+    // This function is called by the Clean modal buttons (onclick="cleanAction('scrub')")
+    function cleanAction(type) {
+      // Each clean action adds 10 points to the clean bar, up to 100
+      clean = Math.min(100, clean + 10);
+      updateBars();
+      // Show a quick message in the Clean modal, not as an alert
+      let msg = '';
+      if (type === 'scrub') msg = "Scrub scrub! So clean!";
+      if (type === 'disinfect') msg = "Disinfected! Safe and shiny!";
+      if (type === 'soap') msg = "Soap bubbles everywhere!";
+      // Find or create a message div in the Clean modal
+      let cleanMsg = document.getElementById('cleanMsg');
+      if (!cleanMsg) {
+        cleanMsg = document.createElement('div');
+        cleanMsg.id = 'cleanMsg';
+        cleanMsg.style.color = '#00bfff';
+        cleanMsg.style.marginTop = '10px';
+        // Insert just before the "Done" button in the Clean modal
+        const cleanModal = document.getElementById('cleanModal');
+        const doneBtn = Array.from(cleanModal.getElementsByTagName('button')).find(btn => btn.textContent === 'Done');
+        if (doneBtn) {
+          cleanModal.querySelector('.modal-content').insertBefore(cleanMsg, doneBtn);
+        } else {
+          cleanModal.querySelector('.modal-content').appendChild(cleanMsg);
+        }
+      }
+      cleanMsg.textContent = msg;
+      setTimeout(() => {
+        cleanMsg.textContent = "";
+      }, 1200);
+      // Sparkle if bar reaches 100
+      if (clean === 100) showSparkle('cleanBar');
+    }
+
+    // --- PLAY MINIGAME BUTTONS ---
+    // This function is called by the Play modal buttons (onclick="playAction('jumprope')")
+    function playAction(type) {
+      // Each play action adds 10 points to the happy bar, up to 100
+      happy = Math.min(100, happy + 10);
+      updateBars();
+      // Show a quick message and animation
+      let msg = '';
+      if (type === 'tickle') msg = "Tickle tickle! Your drop giggles!";
+      if (type === 'jumprope') msg = "Jump jump! That was fun!";
+      if (type === 'swimming') msg = "Splash! Swimming time!";
+      if (type === 'diving') msg = "Wow! What a dive!";
+      // Show message in the Play modal (beginner: use alert or add a div for feedback)
+      document.getElementById('playMsg').textContent = msg;
+      setTimeout(() => {
+        document.getElementById('playMsg').textContent = "";
+      }, 1200);
+      // Sparkle if bar reaches 100
+      if (happy === 100) showSparkle('happyBar');
+    }
+
+    // --- OUTFIT SELECTION ---
+    // Called by Dress Up modal buttons (onclick="chooseOutfit(0)" etc)
+    function chooseOutfit(idx) {
+      outfit = idx;
+      updateOutfit();
+      saveState();
+      // Optionally close the modal after choosing
+      closeModal('dressModal');
+    }
+
+    // --- BACKGROUND SELECTION ---
+    // Called by Bg modal buttons (onclick="chooseBg(0)" etc)
+    function chooseBg(idx) {
+      bg = idx;
+      updateBg();
+      saveState();
+      // Optionally close the modal after choosing
+      closeModal('bgModal');
+    }
+
+    // --- Make sure outfit and background are restored on dashboard show ---
+    // Already handled in showDashboard() with updateOutfit() and updateBg()
+
+    // --- Make sure updateOutfit and updateBg work on page load too ---
+    window.addEventListener('DOMContentLoaded', () => {
+      updateOutfit();
+      updateBg();
+    });
   </script>
 </body>
 </html>
