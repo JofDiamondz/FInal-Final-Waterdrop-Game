@@ -371,63 +371,111 @@
   <!-- Difficulty Screen -->
   <div id="difficultyScreen" class="screen" style="flex-direction:column;align-items:center;">
     <div class="header">Choose Difficulty</div>
-    <div style="display:flex;flex-direction:column;gap:18px;margin-top:24px;">
+    <div style="
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 24px;
+      align-items: center;
+    ">
       <!-- Easy: White cloud, drizzle audio -->
-      <button class="cute-btn" id="easyBtn" style="background:none;box-shadow:none;padding:0;">
-        <span style="display:flex;flex-direction:column;align-items:center;">
-          <!-- White cloud SVG -->
-          <svg width="90" height="60" viewBox="0 0 90 60">
-            <ellipse cx="35" cy="40" rx="30" ry="18" fill="#fff"/>
-            <ellipse cx="55" cy="38" rx="22" ry="14" fill="#e0f7fa"/>
-            <ellipse cx="60" cy="46" rx="18" ry="10" fill="#fff"/>
-            <!-- Drizzle drops -->
-            <ellipse cx="30" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
-            <ellipse cx="45" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
-            <ellipse cx="60" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
-          </svg>
-          <span style="color:#00bfff;font-weight:bold;font-size:1.1rem;">Easy</span>
+      <div style="
+        background: #ffe066;
+        border-radius: 18px;
+        box-shadow: 0 2px 12px #b3e0ff44;
+        padding: 18px 18px 14px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 230px;
+        max-width: 320px;
+      ">
+        <button class="cute-btn" id="easyBtn" style="background:none;box-shadow:none;padding:0;margin-bottom:8px;">
+          <span style="display:flex;flex-direction:column;align-items:center;">
+            <!-- White cloud SVG -->
+            <svg width="90" height="60" viewBox="0 0 90 60">
+              <ellipse cx="35" cy="40" rx="30" ry="18" fill="#fff"/>
+              <ellipse cx="55" cy="38" rx="22" ry="14" fill="#e0f7fa"/>
+              <ellipse cx="60" cy="46" rx="18" ry="10" fill="#fff"/>
+              <!-- Drizzle drops -->
+              <ellipse cx="30" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
+              <ellipse cx="45" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
+              <ellipse cx="60" cy="58" rx="2" ry="6" fill="#b3e0ff" opacity="0.7"/>
+            </svg>
+            <span style="color:#00bfff;font-weight:bold;font-size:1.1rem;">Easy</span>
+          </span>
+        </button>
+        <span style="font-size:0.98rem;color:#333;margin-top:4px;max-width:220px;text-align:center;">
+          Win by reaching 80 in all bars.<br>
+          No penalty for dirty drops.<br>
+          Stats drop slowly.
         </span>
-      </button>
+      </div>
       <!-- Normal: Grey cloud, rain audio -->
-      <button class="cute-btn" id="normalBtn" style="background:none;box-shadow:none;padding:0;">
-        <span style="display:flex;flex-direction:column;align-items:center;">
-          <!-- Grey cloud SVG -->
-          <svg width="90" height="60" viewBox="0 0 90 60">
-            <ellipse cx="35" cy="40" rx="30" ry="18" fill="#b0bec5"/>
-            <ellipse cx="55" cy="38" rx="22" ry="14" fill="#90a4ae"/>
-            <ellipse cx="60" cy="46" rx="18" ry="10" fill="#cfd8dc"/>
-            <!-- Rain drops -->
-            <ellipse cx="30" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
-            <ellipse cx="45" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
-            <ellipse cx="60" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
-          </svg>
-          <span style="color:#607d8b;font-weight:bold;font-size:1.1rem;">Normal</span>
+      <div style="
+        background: #ffe066;
+        border-radius: 18px;
+        box-shadow: 0 2px 12px #b3e0ff44;
+        padding: 18px 18px 14px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 230px;
+        max-width: 320px;
+      ">
+        <button class="cute-btn" id="normalBtn" style="background:none;box-shadow:none;padding:0;margin-bottom:8px;">
+          <span style="display:flex;flex-direction:column;align-items:center;">
+            <!-- Grey cloud SVG -->
+            <svg width="90" height="60" viewBox="0 0 90 60">
+              <ellipse cx="35" cy="40" rx="30" ry="18" fill="#b0bec5"/>
+              <ellipse cx="55" cy="38" rx="22" ry="14" fill="#90a4ae"/>
+              <ellipse cx="60" cy="46" rx="18" ry="10" fill="#cfd8dc"/>
+              <!-- Rain drops -->
+              <ellipse cx="30" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
+              <ellipse cx="45" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
+              <ellipse cx="60" cy="58" rx="2" ry="8" fill="#00bfff" opacity="0.8"/>
+            </svg>
+            <span style="color:#607d8b;font-weight:bold;font-size:1.1rem;">Normal</span>
+          </span>
+        </button>
+        <span style="font-size:0.98rem;color:#333;margin-top:4px;max-width:220px;text-align:center;">
+          Win by reaching 100 in all bars.<br>
+          Dirty drops subtract points.<br>
+          Stats drop at a normal speed.
         </span>
-      </button>
+      </div>
       <!-- Hard: Black stormy cloud, lightning, thunder audio -->
-      <button class="cute-btn" id="hardBtn" style="background:none;box-shadow:none;padding:0;">
-        <span style="display:flex;flex-direction:column;align-items:center;">
-          <!-- Black stormy cloud SVG with lightning -->
-          <svg width="90" height="60" viewBox="0 0 90 60">
-            <ellipse cx="35" cy="40" rx="30" ry="18" fill="#222"/>
-            <ellipse cx="55" cy="38" rx="22" ry="14" fill="#444"/>
-            <ellipse cx="60" cy="46" rx="18" ry="10" fill="#333"/>
-            <!-- Lightning bolt -->
-            <polygon points="55,50 65,50 60,60 68,60 58,75 62,62 54,62" fill="#ffe066" stroke="#ffeb3b" stroke-width="1"/>
-          </svg>
-          <span style="color:#222;font-weight:bold;font-size:1.1rem;">Hard</span>
+      <div style="
+        background: #ffe066;
+        border-radius: 18px;
+        box-shadow: 0 2px 12px #b3e0ff44;
+        padding: 18px 18px 14px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 230px;
+        max-width: 320px;
+      ">
+        <button class="cute-btn" id="hardBtn" style="background:none;box-shadow:none;padding:0;margin-bottom:8px;">
+          <span style="display:flex;flex-direction:column;align-items:center;">
+            <!-- Black stormy cloud SVG with lightning -->
+            <svg width="90" height="60" viewBox="0 0 90 60">
+              <ellipse cx="35" cy="40" rx="30" ry="18" fill="#222"/>
+              <ellipse cx="55" cy="38" rx="22" ry="14" fill="#444"/>
+              <ellipse cx="60" cy="46" rx="18" ry="10" fill="#333"/>
+              <!-- Lightning bolt -->
+              <polygon points="55,50 65,50 60,60 68,60 58,75 62,62 54,62" fill="#ffe066" stroke="#ffeb3b" stroke-width="1"/>
+            </svg>
+            <span style="color:#222;font-weight:bold;font-size:1.1rem;">Hard</span>
+          </span>
+        </button>
+        <span style="font-size:0.98rem;color:#333;margin-top:4px;max-width:220px;text-align:center;">
+          Win by reaching 100 in all bars in 2 minutes.<br>
+          Dirty drops penalize all bars.<br>
+          Stats drop quickly. Timer resets if you lose.
         </span>
-      </button>
+      </div>
     </div>
-    <div style="margin-top:18px;font-size:1rem;color:#00bfff;">
-      <b>Easy:</b> Reach 80 in all bars.<br>
-      <b>Normal:</b> Reach 100 in all bars.<br>
-      <b>Hard:</b> Reach 100 in all bars in 2 minutes.<br>
-    </div>
-    <!-- Audio elements (hidden) -->
-    <audio id="audioDrizzle" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae2e7.mp3" preload="auto"></audio>
-    <audio id="audioRain" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae2e7.mp3" preload="auto"></audio>
-    <audio id="audioThunder" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9e2e3c.mp3" preload="auto"></audio>
   </div>
 
   <!-- Dashboard/Main Screen -->
